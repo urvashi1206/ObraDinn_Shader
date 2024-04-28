@@ -6,13 +6,15 @@ using UnityEngine;
 public class ImageEffect : MonoBehaviour
 {
     [SerializeField]
-    private BaseEffect effect;
+    private DitherEffect effect;
 
     private void Awake()
     {
         effect.OnCreate();
     }
 
+
+    // Used to edit render effect on the screen (be called every frame)
     private void OnRenderImage(RenderTexture src, RenderTexture dst)
     {
         effect.Render(src, dst);
