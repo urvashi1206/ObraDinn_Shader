@@ -491,6 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02036a7b5b671f84787fce3c2ea662e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blendvalue: 0
   transitionTime: 2
 --- !u!1 &1524741413
 GameObject:
@@ -708,7 +709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271036430514701939, guid: d512ebcdf02532446b58dc05fc0f10d2, type: 3}
       propertyPath: mouseSensitivity
-      value: 1000
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
