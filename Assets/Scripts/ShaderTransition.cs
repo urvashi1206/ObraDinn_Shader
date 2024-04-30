@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,6 +20,12 @@ public class ShaderTransition : MonoBehaviour
     private Camera cam;
 
     ImageEffect imageEffect;
+
+    [SerializeField]
+    TextMeshProUGUI modeText;
+
+    [SerializeField]
+    GameObject UICanvas;
 
     // A value to control 0-1 in the shader
     public float blendvalue;
@@ -56,7 +63,9 @@ public class ShaderTransition : MonoBehaviour
             {
                 //blendvalue = 0.0f;
                 startTransition = true;
-                Debug.Log("Start Transitioning");
+                //Debug.Log("Start Transitioning");
+
+                ChangeCurrentModeText("Linear");
             }
             //imageEffect.SwitchPattern(blendvalue);
         }
@@ -68,7 +77,9 @@ public class ShaderTransition : MonoBehaviour
                 //blendvalue = 0.0f;
                 startTransition = true;
                 blendTypeValue = 1;
-                Debug.Log("Start Transitioning");
+                //Debug.Log("Start Transitioning");
+
+                ChangeCurrentModeText("Ease In Out Sine");
             }
             //imageEffect.SwitchPattern(blendvalue);
         }
@@ -80,7 +91,9 @@ public class ShaderTransition : MonoBehaviour
                 //blendvalue = 0.0f;
                 startTransition = true;
                 blendTypeValue = 2;
-                Debug.Log("Start Transitioning");
+                //Debug.Log("Start Transitioning");
+
+                ChangeCurrentModeText("Ease In Circle");
             }
             //imageEffect.SwitchPattern(blendvalue);
         }
@@ -92,7 +105,9 @@ public class ShaderTransition : MonoBehaviour
                 //blendvalue = 0.0f;
                 startTransition = true;
                 blendTypeValue = 3;
-                Debug.Log("Start Transitioning");
+                //Debug.Log("Start Transitioning");
+
+                ChangeCurrentModeText("Ease In Bounce");
             }
             //imageEffect.SwitchPattern(blendvalue);
         }
@@ -127,6 +142,28 @@ public class ShaderTransition : MonoBehaviour
 
             imageEffect.SwitchPattern(blendvalue, blendTypeValue);
         }
+
+
+
+
+        // Set UI
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            if(UICanvas.activeSelf)
+            {
+                UICanvas.SetActive(false);
+            }
+            else
+            {
+                UICanvas.SetActive(true);
+            }
+        }
+    }
+
+
+    private void ChangeCurrentModeText(string name)
+    {
+        modeText.text = name;
     }
 
 /*    void SetMaterialOnCamera(Material material)
