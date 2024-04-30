@@ -38,33 +38,17 @@ public class ShaderTransition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*effectBayer.OnCreate();
-        effectBlue.OnCreate();
-        BayerNoise = effectBayer.baseMaterial;
-        BlueNoise = effectBlue.baseMaterial;*/
-
-        cam = GetComponent<Camera>();
+/*        cam = GetComponent<Camera>();
         if (cam == null)
         {
             Debug.LogError("ShaderTransition script needs to be attached to a camera.");
             this.enabled = false;
-        }
-
-/*        // Start with the basic material
-        SetMaterialOnCamera(BayerNoise);*/
+        }*/
     }
 
     // Update is called once per frame
     void Update()
     {
-/*        if(Input.GetKeyDown(KeyCode.Space))
-        {
-
-            Debug.Log("switch");
-            imageEffect.SwitchPattern();
-
-        }*/
-
         if (Input.GetKeyDown(KeyCode.T))
         {
             if (!startTransition)

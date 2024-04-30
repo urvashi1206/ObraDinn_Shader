@@ -73,6 +73,12 @@
 
             float _Blend;
 
+
+            float EaseInOutSine(float t) {
+                //return 0.5 * (1 - cos(t * 3.1415926535897932384626433832795));
+            }
+
+
             // Fragment shader function
             float4 frag (v2f i) : SV_Target
             {
@@ -106,6 +112,8 @@
 				float3 rgb1 = tex2D(_ColorRampTex, float2(rampVal1, 0.5f));
                 float3 rgb2 = tex2D(_ColorRampTex, float2(rampVal2, 0.5f));
 
+                //float blend = 1.0 - exp(-10.0 * _Blend);
+                //float easedBlend = EaseInOutSine(_Blend);
                 return lerp(float4(rgb1, 1.0f), float4(rgb2, 1.0f), _Blend);
             }
             ENDCG
