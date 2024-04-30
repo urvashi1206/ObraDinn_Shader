@@ -63,6 +63,7 @@ public class ShaderTransition : MonoBehaviour
             {
                 //blendvalue = 0.0f;
                 startTransition = true;
+                blendTypeValue = 0;
                 //Debug.Log("Start Transitioning");
 
                 ChangeCurrentModeText("Linear");
