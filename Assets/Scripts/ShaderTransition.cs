@@ -27,6 +27,8 @@ public class ShaderTransition : MonoBehaviour
     public float transitionTime = 5.0f;
     private bool startTransition = false;
 
+    private bool isAscent = true;
+
 
     private void Awake()
     {
@@ -68,23 +70,41 @@ public class ShaderTransition : MonoBehaviour
             if (!startTransition)
             {
                 //blendvalue = 0.0f;
-                startTransition = true; 
+                startTransition = true;
+                Debug.Log("Start Transitioning");
             }
             //imageEffect.SwitchPattern(blendvalue);
         }
 
         if (startTransition)
         {
-            if (blendvalue < 1.0f)
+            if (blendvalue <= 1.0f && blendvalue >= 0)
             {
-                blendvalue += Time.deltaTime / transitionTime;
-                imageEffect.SwitchPattern(blendvalue);
+                if(isAscent)
+                {
+                    blendvalue += Time.deltaTime / transitionTime;
+                    //Debug.Log("Ascent");
+                }
+                else
+                {
+                    blendvalue -= Time.deltaTime / transitionTime;
+                    //Debug.Log("Descent");
+                }
             }
-            else
+            else if(blendvalue > 1.0f)
             {
                 blendvalue = 1.0f;
+                isAscent = false;
                 startTransition = false;
             }
+            else if (blendvalue < 0.0f)
+            {
+                blendvalue = 0.0f;
+                isAscent = true;
+                startTransition = false;
+            }
+
+            imageEffect.SwitchPattern(blendvalue);
         }
     }
 
