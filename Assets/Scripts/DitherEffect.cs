@@ -27,7 +27,7 @@ public class DitherEffect : ScriptableObject
     private FilterMode filterMode = FilterMode.Point;
 
     // Find the Dither shader source.
-    public void OnCreate(float blendValue)
+    public void OnCreate(float blendValue, int blendTypeValue)
     {
         // Create a new dither shader
         baseMaterial = new Material(Resources.Load<Shader>("Shaders/Dither"));
@@ -36,7 +36,7 @@ public class DitherEffect : ScriptableObject
         baseMaterial.SetTexture("_NoiseTex2", ditherTex2);
 
         baseMaterial.SetFloat("_Blend", blendValue);
-
+        baseMaterial.SetInt("_BlendType", blendTypeValue);
         baseMaterial.SetTexture("_ColorRampTex", rampTex);
     }
 

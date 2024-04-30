@@ -14,7 +14,7 @@ public class ImageEffect : MonoBehaviour
 
     private void Awake()
     {
-        effect.OnCreate(0);
+        effect.OnCreate(0,0);
     }
 
 
@@ -40,8 +40,8 @@ public class ImageEffect : MonoBehaviour
         }*/
     }
 
-    public void SwitchPattern(float value)
+    public void SwitchPattern(float value, int blendType)
     {
-        effect.OnCreate(value);
+        effect.OnCreate(value, blendType);
     }
 }

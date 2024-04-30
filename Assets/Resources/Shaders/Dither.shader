@@ -9,6 +9,8 @@
         _NoiseTex2("Noise Texture2", 2D) = "white" {}
 		_ColorRampTex("Color Ramp", 2D) = "white" {}
 
+        _BlendType ("_BlendType", Int) = 1
+
         // Control the blend value for transition
         _Blend("Blend", Range(0,1)) = 0
     }
@@ -72,12 +74,31 @@
 
 
             float _Blend;
+            int _BlendType;
 
 
             float EaseInOutSine(float t) {
-                //return 0.5 * (1 - cos(t * 3.1415926535897932384626433832795));
+                return 0.5 * (1 - cos(t * 3.1415926535897932384626433832795));
             }
 
+            float EaseInBounce(float x) {
+                if (x < 1 / 2.75) {
+                    return 7.5625 * x * x;
+                } else if (x < 2 / 2.75) {
+                    x -= 1.5 / 2.75;
+                    return 7.5625 * x * x + 0.75;
+                } else if (x < 2.5 / 2.75) {
+                    x -= 2.25 / 2.75;
+                    return 7.5625 * x * x + 0.9375;
+                } else {
+                    x -= 2.625 / 2.75;
+                    return 7.5625 * x * x + 0.984375;
+                }
+            }
+
+            float EaseInCircle(float x) {
+				return 1 - sqrt(1 - x * x);
+			}
 
             // Fragment shader function
             float4 frag (v2f i) : SV_Target
@@ -114,7 +135,25 @@
 
                 //float blend = 1.0 - exp(-10.0 * _Blend);
                 //float easedBlend = EaseInOutSine(_Blend);
-                return lerp(float4(rgb1, 1.0f), float4(rgb2, 1.0f), _Blend);
+                float blend = 0.0f;
+
+                switch(_BlendType)
+				{
+					case 1:
+						// Ease In Out Sine
+                        blend = EaseInOutSine(_Blend);
+						break;
+					case 2:
+						// Ease in Circle
+                        blend = EaseInCircle(_Blend);
+						break;
+					case 3:
+						// Ease In Bounce
+                        blend = EaseInBounce(_Blend);
+						break;
+				}
+                
+                return lerp(float4(rgb1, 1.0f), float4(rgb2, 1.0f), blend);
             }
             ENDCG
         }

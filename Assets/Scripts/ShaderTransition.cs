@@ -22,6 +22,7 @@ public class ShaderTransition : MonoBehaviour
 
     // A value to control 0-1 in the shader
     public float blendvalue;
+    public int blendTypeValue;
 
     // Set time
     public float transitionTime = 5.0f;
@@ -60,6 +61,42 @@ public class ShaderTransition : MonoBehaviour
             //imageEffect.SwitchPattern(blendvalue);
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if (!startTransition)
+            {
+                //blendvalue = 0.0f;
+                startTransition = true;
+                blendTypeValue = 1;
+                Debug.Log("Start Transitioning");
+            }
+            //imageEffect.SwitchPattern(blendvalue);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (!startTransition)
+            {
+                //blendvalue = 0.0f;
+                startTransition = true;
+                blendTypeValue = 2;
+                Debug.Log("Start Transitioning");
+            }
+            //imageEffect.SwitchPattern(blendvalue);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (!startTransition)
+            {
+                //blendvalue = 0.0f;
+                startTransition = true;
+                blendTypeValue = 3;
+                Debug.Log("Start Transitioning");
+            }
+            //imageEffect.SwitchPattern(blendvalue);
+        }
+
         if (startTransition)
         {
             if (blendvalue <= 1.0f && blendvalue >= 0)
@@ -88,7 +125,7 @@ public class ShaderTransition : MonoBehaviour
                 startTransition = false;
             }
 
-            imageEffect.SwitchPattern(blendvalue);
+            imageEffect.SwitchPattern(blendvalue, blendTypeValue);
         }
     }
 
