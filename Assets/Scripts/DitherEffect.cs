@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Image Effects Ultra/Dither", order = 1)]
+[CreateAssetMenu]
 public class DitherEffect : ScriptableObject
 {
 

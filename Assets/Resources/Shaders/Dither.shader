@@ -1,4 +1,4 @@
-﻿Shader "UltraEffects/Dither"
+﻿Shader "Custom/Dither"
 {
     Properties
     {
