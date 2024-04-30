@@ -27,6 +27,7 @@ public class ShaderTransition : MonoBehaviour
     public float transitionTime = 5.0f;
     private bool startTransition = false;
 
+
     private void Awake()
     {
         imageEffect = GetComponent<ImageEffect>();
@@ -64,7 +65,26 @@ public class ShaderTransition : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            imageEffect.SwitchPattern(blendvalue);
+            if (!startTransition)
+            {
+                //blendvalue = 0.0f;
+                startTransition = true; 
+            }
+            //imageEffect.SwitchPattern(blendvalue);
+        }
+
+        if (startTransition)
+        {
+            if (blendvalue < 1.0f)
+            {
+                blendvalue += Time.deltaTime / transitionTime;
+                imageEffect.SwitchPattern(blendvalue);
+            }
+            else
+            {
+                blendvalue = 1.0f;
+                startTransition = false;
+            }
         }
     }
 
