@@ -6,7 +6,7 @@ using UnityEngine;
 public class ImageEffect : MonoBehaviour
 {
     [SerializeField]
-    private DitherEffect effect;
+    public DitherEffect effect;
 
     private void Awake()
     {
