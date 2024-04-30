@@ -20,6 +20,9 @@ public class ShaderTransition : MonoBehaviour
 
     ImageEffect imageEffect;
 
+    // A value to control 0-1 in the shader
+    public float blendvalue;
+
     private void Awake()
     {
         imageEffect = GetComponent<ImageEffect>();
@@ -54,6 +57,11 @@ public class ShaderTransition : MonoBehaviour
             imageEffect.SwitchPattern();
 
             timer += Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            imageEffect.SwitchPattern(blendvalue);
         }
     }
 

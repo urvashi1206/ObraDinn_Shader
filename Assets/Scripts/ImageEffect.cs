@@ -14,7 +14,7 @@ public class ImageEffect : MonoBehaviour
 
     private void Awake()
     {
-        effect.OnCreate();
+        effect.OnCreate(0);
     }
 
 
@@ -26,7 +26,7 @@ public class ImageEffect : MonoBehaviour
 
     public void SwitchPattern()
     {
-        if(effect == blueNoise)
+/*        if(effect == blueNoise)
         {
             effect = bayerNoise;
             effect.OnCreate();
@@ -37,6 +37,11 @@ public class ImageEffect : MonoBehaviour
             effect = blueNoise;
             effect.OnCreate();
             Debug.Log("Switch to blue noise ");
-        }
+        }*/
+    }
+
+    public void SwitchPattern(float value)
+    {
+        effect.OnCreate(value);
     }
 }

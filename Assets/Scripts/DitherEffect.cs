@@ -10,7 +10,9 @@ public class DitherEffect : ScriptableObject
 
     //The texture of implement the bayer pattern
     [SerializeField]
-    private Texture2D ditherTex;
+    private Texture2D ditherTex1;
+    [SerializeField]
+    private Texture2D ditherTex2;
 
     //For color gradient ramp
     [SerializeField]
@@ -25,12 +27,16 @@ public class DitherEffect : ScriptableObject
     private FilterMode filterMode = FilterMode.Point;
 
     // Find the Dither shader source.
-    public void OnCreate()
+    public void OnCreate(float blendValue)
     {
         // Create a new dither shader
         baseMaterial = new Material(Resources.Load<Shader>("Shaders/Dither"));
         // Set texture value in shader
-        baseMaterial.SetTexture("_NoiseTex", ditherTex);
+        baseMaterial.SetTexture("_NoiseTex1", ditherTex1);
+        baseMaterial.SetTexture("_NoiseTex2", ditherTex2);
+
+        baseMaterial.SetFloat("_Blend", blendValue);
+
         baseMaterial.SetTexture("_ColorRampTex", rampTex);
     }
 

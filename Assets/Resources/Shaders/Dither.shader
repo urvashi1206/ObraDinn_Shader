@@ -5,8 +5,12 @@
         // Main texture
         _MainTex ("Texture", 2D) = "white" {}
         // The noise texture
-		_NoiseTex("Noise Texture", 2D) = "white" {}
+		_NoiseTex1("Noise Texture1", 2D) = "white" {}
+        _NoiseTex2("Noise Texture2", 2D) = "white" {}
 		_ColorRampTex("Color Ramp", 2D) = "white" {}
+
+        // Control the blend value for transition
+        _Blend("Blend", Range(0,1)) = 0
     }
     SubShader
     {
@@ -53,16 +57,21 @@
 			float4 _MainTex_TexelSize;
 
             // Get value from dither effect
-			sampler2D _NoiseTex;
+			sampler2D _NoiseTex1;
+            sampler2D _NoiseTex2;
 
             // The variable typically provides the size of a texture pixel of the noise texture
-			float4 _NoiseTex_TexelSize;
+			float4 _NoiseTex1_TexelSize;
+            float4 _NoiseTex2_TexelSize;
 
 			sampler2D _ColorRampTex;
 
             // Get value from dither effect
 			float _XOffset;
 			float _YOffset;
+
+
+            float _Blend;
 
             // Fragment shader function
             float4 frag (v2f i) : SV_Target
@@ -74,23 +83,30 @@
 				float lum = dot(col, float3(0.299f, 0.587f, 0.114f));
 
                 // calculate the new UV with noise on it, by texture pixle's width and height
-				float2 noiseUV = i.uv * _NoiseTex_TexelSize.xy * _MainTex_TexelSize.zw;
+				float2 noiseUV1 = i.uv * _NoiseTex1_TexelSize.xy * _MainTex_TexelSize.zw;
+                float2 noiseUV2 = i.uv * _NoiseTex2_TexelSize.xy * _MainTex_TexelSize.zw;
 
-				noiseUV += float2(_XOffset, _YOffset);
+				noiseUV1 += float2(_XOffset, _YOffset);
+                noiseUV2 += float2(_XOffset, _YOffset);
 
                 // Calculate the color of the modified texture with the noise uv coordinates
-				float3 threshold = tex2D(_NoiseTex, noiseUV);
-				float thresholdLum = dot(threshold, float3(0.299f, 0.587f, 0.114f));
+				float3 threshold1 = tex2D(_NoiseTex1, noiseUV1);
+                float3 threshold2 = tex2D(_NoiseTex2, noiseUV2);
+
+				float thresholdLum1 = dot(threshold1, float3(0.299f, 0.587f, 0.114f));
+                float thresholdLum2 = dot(threshold2, float3(0.299f, 0.587f, 0.114f));
 
                 // lum: The original color without noise
                 // threshold: the color of the noise
                 // Compared to the noise color, if the color is more like black, then the value close to 0, and if white, close it 1
-				float rampVal = lum < thresholdLum ? thresholdLum - lum : 1.0f;
+				float rampVal1 = lum < thresholdLum1 ? thresholdLum1 - lum : 1.0f;
+                float rampVal2 = lum < thresholdLum2 ? thresholdLum2 - lum : 1.0f;
 
                 // 0.5 - a horizontal ramp
-				float3 rgb = tex2D(_ColorRampTex, float2(rampVal, 0.5f));
+				float3 rgb1 = tex2D(_ColorRampTex, float2(rampVal1, 0.5f));
+                float3 rgb2 = tex2D(_ColorRampTex, float2(rampVal2, 0.5f));
 
-				return float4(rgb, 1.0f);
+                return lerp(float4(rgb1, 1.0f), float4(rgb2, 1.0f), _Blend);
             }
             ENDCG
         }
