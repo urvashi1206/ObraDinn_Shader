@@ -8,6 +8,10 @@ public class ImageEffect : MonoBehaviour
     [SerializeField]
     public DitherEffect effect;
 
+
+    public DitherEffect blueNoise;
+    public DitherEffect bayerNoise;
+
     private void Awake()
     {
         effect.OnCreate();
@@ -18,5 +22,21 @@ public class ImageEffect : MonoBehaviour
     private void OnRenderImage(RenderTexture src, RenderTexture dst)
     {
         effect.Render(src, dst);
+    }
+
+    public void SwitchPattern()
+    {
+        if(effect == blueNoise)
+        {
+            effect = bayerNoise;
+            effect.OnCreate();
+            Debug.Log("Switch to bayer ");
+        }
+        else
+        {
+            effect = blueNoise;
+            effect.OnCreate();
+            Debug.Log("Switch to blue noise ");
+        }
     }
 }

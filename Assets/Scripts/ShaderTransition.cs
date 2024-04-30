@@ -13,10 +13,17 @@ public class ShaderTransition : MonoBehaviour
     private DitherEffect effectBayer;
     [SerializeField]
     private DitherEffect effectBlue;*/
-    public Material BayerNoise;
-    public Material BlueNoise;
+/*    public Material BayerNoise;
+    public Material BlueNoise;*/
 
     private Camera cam;
+
+    ImageEffect imageEffect;
+
+    private void Awake()
+    {
+        imageEffect = GetComponent<ImageEffect>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +40,8 @@ public class ShaderTransition : MonoBehaviour
             this.enabled = false;
         }
 
-        // Start with the basic material
-        SetMaterialOnCamera(BayerNoise);
+/*        // Start with the basic material
+        SetMaterialOnCamera(BayerNoise);*/
     }
 
     // Update is called once per frame
@@ -43,28 +50,8 @@ public class ShaderTransition : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Transition = true;
-            SetMaterialOnCamera(BlueNoise);
-            /*if (timer > transitionDelay)
-            {
-                Transition = true;
-            }*/
-
-            /*if (Transition)
-            {
-                float lerpFactor = (timer) / transitionTime;
-                Debug.Log(lerpFactor);
-                if (lerpFactor > 1.0f)
-                {
-                    lerpFactor = 1.0f;
-                    //GetComponent<Renderer>().material = BayerNoise;
-                    SetMaterialOnCamera(BayerNoise);
-                }
-                else
-                {
-                    LerpMaterialProperties(BayerNoise, BlueNoise, lerpFactor);
-                    //GetComponent<Renderer>().material.Lerp(BayerNoise, BlueNoise, lerpFactor);
-                }
-            }*/
+            Debug.Log("switch");
+            imageEffect.SwitchPattern();
 
             timer += Time.deltaTime;
         }
