@@ -100,62 +100,70 @@
 				return 1 - sqrt(1 - x * x);
 			}
 
-            // Fragment shader function
-            float4 frag (v2f i) : SV_Target
+            float2 edge(float2 uv, float2 delta)
             {
-                // Calculate the color using sampler2D and texture coordinate
-                // Base texture color
+                float3 up = tex2D(_MainTex, uv + float2(0.0, 1.0) * delta);
+                float3 down = tex2D(_MainTex, uv + float2(0.0, -1.0) * delta);
+                float3 left = tex2D(_MainTex, uv + float2(1.0, 0.0) * delta);
+                float3 right = tex2D(_MainTex, uv + float2(-1.0, 0.0) * delta);
+                float3 centre = tex2D(_MainTex, uv);
+
+                return float2(min(up.b, min(min(down.b, left.b), min(right.b, centre.b))),
+                    max(max(distance(centre.rg, up.rg), distance(centre.rg, down.rg)),
+                        max(distance(centre.rg, left.rg), distance(centre.rg, right.rg))));
+            }
+
+            // Fragment shader function
+            // Fragment shader function
+            float4 frag(v2f i) : SV_Target
+            {
+                // Calculate the base texture color
                 float3 col = tex2D(_MainTex, i.uv).xyz;
-                // Luminance according to human eye 
-				float lum = dot(col, float3(0.299f, 0.587f, 0.114f));
+                // Calculate luminance according to human perception
+                float lum = dot(col, float3(0.299f, 0.587f, 0.114f));
 
-                // calculate the new UV with noise on it, by texture pixle's width and height
-				float2 noiseUV1 = i.uv * _NoiseTex1_TexelSize.xy * _MainTex_TexelSize.zw;
-                float2 noiseUV2 = i.uv * _NoiseTex2_TexelSize.xy * _MainTex_TexelSize.zw;
+                // Calculate edge data
+                float2 edgeData = edge(i.uv, _MainTex_TexelSize.xy * 2.0f);
 
-				noiseUV1 += float2(_XOffset, _YOffset);
-                noiseUV2 += float2(_XOffset, _YOffset);
+                // Enhance edges by adjusting luminance based on edge detection
+                float enhancedLum = lum * (1.0f - clamp(edgeData.y * 10.0f, 0.0f, 1.0f));
 
-                // Calculate the color of the modified texture with the noise uv coordinates
-				float3 threshold1 = tex2D(_NoiseTex1, noiseUV1);
+                // Use noise textures to calculate threshold luminance
+                float2 noiseUV1 = i.uv * _NoiseTex1_TexelSize.xy * _MainTex_TexelSize.zw + float2(_XOffset, _YOffset);
+                float2 noiseUV2 = i.uv * _NoiseTex2_TexelSize.xy * _MainTex_TexelSize.zw + float2(_XOffset, _YOffset);
+
+                float3 threshold1 = tex2D(_NoiseTex1, noiseUV1);
                 float3 threshold2 = tex2D(_NoiseTex2, noiseUV2);
 
-				float thresholdLum1 = dot(threshold1, float3(0.299f, 0.587f, 0.114f));
+                float thresholdLum1 = dot(threshold1, float3(0.299f, 0.587f, 0.114f));
                 float thresholdLum2 = dot(threshold2, float3(0.299f, 0.587f, 0.114f));
 
-                // lum: The original color without noise
-                // threshold: the color of the noise
-                // Compared to the noise color, if the color is more like black, then the value close to 0, and if white, close it 1
-				float rampVal1 = lum < thresholdLum1 ? thresholdLum1 - lum : 1.0f;
-                float rampVal2 = lum < thresholdLum2 ? thresholdLum2 - lum : 1.0f;
+                // Determine the ramp values based on luminance and thresholds
+                float rampVal1 = enhancedLum < thresholdLum1 ? thresholdLum1 - enhancedLum : 1.0f;
+                float rampVal2 = enhancedLum < thresholdLum2 ? thresholdLum2 - enhancedLum : 1.0f;
 
-                // 0.5 - a horizontal ramp
-				float3 rgb1 = tex2D(_ColorRampTex, float2(rampVal1, 0.5f));
+                float3 rgb1 = tex2D(_ColorRampTex, float2(rampVal1, 0.5f));
                 float3 rgb2 = tex2D(_ColorRampTex, float2(rampVal2, 0.5f));
 
-                //float blend = 1.0 - exp(-10.0 * _Blend);
-                //float easedBlend = EaseInOutSine(_Blend);
+                // Blend based on the selected easing function
                 float blend = 0.0f;
-
-                switch(_BlendType)
-				{
-					case 1:
-						// Ease In Out Sine
+                switch (_BlendType)
+                {
+                    case 1:
                         blend = EaseInOutSine(_Blend);
-						break;
-					case 2:
-						// Ease in Circle
+                        break;
+                    case 2:
                         blend = EaseInCircle(_Blend);
-						break;
-					case 3:
-						// Ease In Bounce
+                        break;
+                    case 3:
                         blend = EaseInBounce(_Blend);
-						break;
+                        break;
                     default:
                         blend = _Blend;
                         break;
-				}
-                
+                }
+
+                // Return the final color by blending the two color ramps based on edge detection
                 return lerp(float4(rgb1, 1.0f), float4(rgb2, 1.0f), blend);
             }
             ENDCG
