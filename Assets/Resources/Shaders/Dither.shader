@@ -151,6 +151,9 @@
 						// Ease In Bounce
                         blend = EaseInBounce(_Blend);
 						break;
+                    default:
+                        blend = _Blend;
+                        break;
 				}
                 
                 return lerp(float4(rgb1, 1.0f), float4(rgb2, 1.0f), blend);
