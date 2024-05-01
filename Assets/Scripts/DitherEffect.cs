@@ -5,33 +5,31 @@ using UnityEngine;
 [CreateAssetMenu]
 public class DitherEffect : ScriptableObject
 {
-
     protected Material baseMaterial;
-
-    //The texture of implement the bayer pattern
+    // The texture of implement the bayer pattern
     [SerializeField]
     private Texture2D ditherTex1;
+    // The texture of implement the blue noise pattern
     [SerializeField]
     private Texture2D ditherTex2;
 
-    //For color gradient ramp
+    // For color gradient ramp
     [SerializeField]
     private Texture2D rampTex;
 
-    //Make texture scrolling
+    // Make texture scrolling
     [SerializeField]
     private bool useScrolling = false;
 
-    //Point is for pixel style
+    // Point is for pixel style
     [SerializeField]
     private FilterMode filterMode = FilterMode.Point;
 
     // Find the Dither shader source.
     public void OnCreate(float blendValue, int blendTypeValue)
     {
-        // Create a new dither shader
         baseMaterial = new Material(Resources.Load<Shader>("Shaders/Dither"));
-        // Set texture value in shader
+
         baseMaterial.SetTexture("_NoiseTex1", ditherTex1);
         baseMaterial.SetTexture("_NoiseTex2", ditherTex2);
 

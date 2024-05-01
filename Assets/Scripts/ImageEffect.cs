@@ -9,8 +9,8 @@ public class ImageEffect : MonoBehaviour
     public DitherEffect effect;
 
 
-    public DitherEffect blueNoise;
-    public DitherEffect bayerNoise;
+/*    public DitherEffect blueNoise;
+    public DitherEffect bayerNoise;*/
 
     private void Awake()
     {
@@ -24,9 +24,9 @@ public class ImageEffect : MonoBehaviour
         effect.Render(src, dst);
     }
 
-    public void SwitchPattern()
+/*    public void SwitchPattern()
     {
-/*        if(effect == blueNoise)
+        if (effect == blueNoise)
         {
             effect = bayerNoise;
             effect.OnCreate();
@@ -37,8 +37,8 @@ public class ImageEffect : MonoBehaviour
             effect = blueNoise;
             effect.OnCreate();
             Debug.Log("Switch to blue noise ");
-        }*/
-    }
+        }
+    }*/
 
     public void SwitchPattern(float value, int blendType)
     {

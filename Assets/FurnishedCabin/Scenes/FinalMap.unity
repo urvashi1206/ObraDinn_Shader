@@ -488,8 +488,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 6f7f5e9cb2843904996fec310a561c9f, type: 2}
-  blueNoise: {fileID: 11400000, guid: 1805140a8ce4fc8478e61fed0e9b2186, type: 2}
-  bayerNoise: {fileID: 11400000, guid: 6f7f5e9cb2843904996fec310a561c9f, type: 2}
 --- !u!114 &1217866293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,7 +726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271036430514701939, guid: d512ebcdf02532446b58dc05fc0f10d2, type: 3}
       propertyPath: mouseSensitivity
-      value: 1
+      value: 700
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -44,15 +44,15 @@ public class ShaderTransition : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+/*    void Start()
     {
-/*        cam = GetComponent<Camera>();
+        cam = GetComponent<Camera>();
         if (cam == null)
         {
             Debug.LogError("ShaderTransition script needs to be attached to a camera.");
             this.enabled = false;
-        }*/
-    }
+        }
+    }*/
 
     // Update is called once per frame
     void Update()
@@ -143,9 +143,6 @@ public class ShaderTransition : MonoBehaviour
 
             imageEffect.SwitchPattern(blendvalue, blendTypeValue);
         }
-
-
-
 
         // Set UI
         if(Input.GetKeyDown(KeyCode.H))
